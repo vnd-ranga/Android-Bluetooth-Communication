@@ -1,4 +1,4 @@
-package com.ranga.androidbluetoothcommunication;
+package com.ranga.vnd.communication;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.ranga.androidbluetoothcommunication.test", appContext.getPackageName());
+        assertEquals("com.ranga.vnd.androidbluetoothcommunication", appContext.getPackageName());
     }
 }

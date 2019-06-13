@@ -1,20 +1,21 @@
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'java'
 
 version '1.0.0'
-group 'com.ranga.androidbluetoothcommunication'
+group 'com.ranga.vnd.androidbluetoothcommunication'
 
 publishing {
     publications {
         Production(MavenPublication) {
-            artifact("$buildDir/outputs/aar/androidbluetoothcommunication-release.aar")
+            artifact("$buildDir/androidbluetoothcommunication/build/outputs/aar/androidbluetoothcommunication-release.aar")
             groupId this.group
             artifactId 'androidbluetoothcommunication'
             version this.version
 
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
 
+            pom.withXml {
+                def dependenciesNode = asNode().getAt('dependencies')[0] ?: asNode().appendNode('dependencies')
                 // Iterate over the implementation dependencies (we don't want the test ones),
                 // adding a <dependency> node for each
                 configurations.implementation.allDependencies.each {
@@ -42,9 +43,12 @@ bintray {
     override = false
     // Default: false. Whether version should be auto published after an upload
     publish = true
+
     pkg {
         repo = 'Android-Bluetooth-Communication'
-        name = 'com.ranga.androidbluetoothcommunication' 
+        name = 'com.ranga.vnd.androidbluetoothcommunication'
+        publish = true
+        publicDownloadNumbers = true
         version {
             name = this.version
             released = new Date()

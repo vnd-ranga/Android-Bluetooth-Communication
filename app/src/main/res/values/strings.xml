@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Android Bluetooth Communication</string>
+    <string name="action_settings">Settings</string>
+    <string name="not_connect">Status : Not connect</string>
+    <string name="failed_connect">Status : Connection failed</string>
+    <string name="connected">Connected to </string>
+    <string name="send">Send</string>
+    <string name="enter_command">Enter Command</string>
 </resources>

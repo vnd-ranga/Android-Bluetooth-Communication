@@ -1,4 +1,4 @@
-package com.ranga.androidbluetoothcommunication;
+package com.ranga.vnd.communication;
 
 import org.junit.Test;
 
