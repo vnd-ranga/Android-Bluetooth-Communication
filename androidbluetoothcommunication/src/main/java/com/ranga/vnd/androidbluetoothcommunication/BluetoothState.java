@@ -8,6 +8,8 @@ public class BluetoothState {
     public static final int STATE_CONNECTING = 2; 	// now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  	// now connected to a remote device
     public static final int STATE_NULL = -1;  	 	// now service is null
+    public static final int REQUEST_ACCESS_COARSE_LOCATION = 500;  	 	// now service is null
+    public static final int REQUEST_ACCESS_BLUETOOTH= 501;  	 	// now service is null
 
     // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
@@ -30,5 +32,6 @@ public class BluetoothState {
 
     // Return Intent extra
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
+
 
 }

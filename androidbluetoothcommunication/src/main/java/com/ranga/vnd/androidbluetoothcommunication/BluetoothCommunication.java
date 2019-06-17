@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
@@ -149,6 +150,8 @@ public class BluetoothCommunication {
     }
 
     private final Handler mHandler = new Handler() {
+
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case BluetoothState.MESSAGE_WRITE:
@@ -206,6 +209,7 @@ public class BluetoothCommunication {
     }
 
     public void connect(Intent data) {
+
         String address = data.getExtras().getString(BluetoothState.EXTRA_DEVICE_ADDRESS);
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         mChatService.connect(device);
