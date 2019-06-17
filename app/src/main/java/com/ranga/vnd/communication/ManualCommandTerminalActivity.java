@@ -18,7 +18,7 @@ import com.ranga.vnd.androidbluetoothcommunication.DeviceListActivity;
 
 public class ManualCommandTerminalActivity extends AppCompatActivity {
 
-    BluetoothCommunication bt;
+    BluetoothCommunication bluetoothCommunication;
 
     TextView textStatus, textRead;
     EditText etMessage;
@@ -33,22 +33,22 @@ public class ManualCommandTerminalActivity extends AppCompatActivity {
         textStatus = findViewById(R.id.textStatus);
         etMessage = findViewById(R.id.etMessage);
 
-        bt = new BluetoothCommunication(this);
+        bluetoothCommunication = new BluetoothCommunication(this);
 
-        if(!bt.isBluetoothAvailable()) {
+        if(!bluetoothCommunication.isBluetoothAvailable()) {
             Toast.makeText(getApplicationContext()
                     , "Bluetooth is not available"
                     , Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        bt.setOnDataReceivedListener(new BluetoothCommunication.OnDataReceivedListener() {
+        bluetoothCommunication.setOnDataReceivedListener(new BluetoothCommunication.OnDataReceivedListener() {
             public void onDataReceived(byte[] data, String message) {
                 textRead.append(message + "\n");
             }
         });
 
-        bt.setBluetoothConnectionListener(new BluetoothCommunication.BluetoothConnectionListener() {
+        bluetoothCommunication.setBluetoothConnectionListener(new BluetoothCommunication.BluetoothConnectionListener() {
             public void onDeviceDisconnected() {
                 textStatus.setText(getString(R.string.not_connect));
                 menu.clear();
@@ -76,40 +76,40 @@ public class ManualCommandTerminalActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.menu_android_connect) {
-            bt.setDeviceTarget(BluetoothState.DEVICE_ANDROID);
+            bluetoothCommunication.setDeviceTarget(BluetoothState.DEVICE_ANDROID);
 			/*
-			if(bt.getServiceState() == BluetoothState.STATE_CONNECTED)
-    			bt.disconnect();*/
+			if(bluetoothCommunication.getServiceState() == BluetoothState.STATE_CONNECTED)
+    			bluetoothCommunication.disconnect();*/
             Intent intent = new Intent(getApplicationContext(), DeviceListActivity.class);
             startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
         } else if(id == R.id.menu_device_connect) {
-            bt.setDeviceTarget(BluetoothState.DEVICE_OTHER);
+            bluetoothCommunication.setDeviceTarget(BluetoothState.DEVICE_OTHER);
 			/*
-			if(bt.getServiceState() == BluetoothState.STATE_CONNECTED)
-    			bt.disconnect();*/
+			if(bluetoothCommunication.getServiceState() == BluetoothState.STATE_CONNECTED)
+    			bluetoothCommunication.disconnect();*/
             Intent intent = new Intent(getApplicationContext(), DeviceListActivity.class);
             startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
         } else if(id == R.id.menu_disconnect) {
-            if(bt.getServiceState() == BluetoothState.STATE_CONNECTED)
-                bt.disconnect();
+            if(bluetoothCommunication.getServiceState() == BluetoothState.STATE_CONNECTED)
+                bluetoothCommunication.disconnect();
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void onDestroy() {
         super.onDestroy();
-        bt.stopService();
+        bluetoothCommunication.stopService();
     }
 
     public void onStart() {
         super.onStart();
-        if (!bt.isBluetoothEnabled()) {
+        if (!bluetoothCommunication.isBluetoothEnabled()) {
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
         } else {
-            if(!bt.isServiceAvailable()) {
-                bt.setupService();
-                bt.startService(BluetoothState.DEVICE_ANDROID);
+            if(!bluetoothCommunication.isServiceAvailable()) {
+                bluetoothCommunication.setupService();
+                bluetoothCommunication.startService(BluetoothState.DEVICE_ANDROID);
                 setup();
             }
         }
@@ -120,7 +120,7 @@ public class ManualCommandTerminalActivity extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if(etMessage.getText().length() != 0) {
-                    bt.send(etMessage.getText().toString(), true);
+                    bluetoothCommunication.send(etMessage.getText().toString(), true);
                     etMessage.setText("");
                 }
             }
@@ -130,11 +130,11 @@ public class ManualCommandTerminalActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if(resultCode == AppCompatActivity.RESULT_OK)
-                bt.connect(data);
+                bluetoothCommunication.connect(data);
         } else if(requestCode == BluetoothState.REQUEST_ENABLE_BT) {
             if(resultCode == AppCompatActivity.RESULT_OK) {
-                bt.setupService();
-                bt.startService(BluetoothState.DEVICE_ANDROID);
+                bluetoothCommunication.setupService();
+                bluetoothCommunication.startService(BluetoothState.DEVICE_ANDROID);
                 setup();
             } else {
                 Toast.makeText(getApplicationContext()
